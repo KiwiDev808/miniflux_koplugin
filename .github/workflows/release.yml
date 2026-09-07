@@ -70,7 +70,8 @@ jobs:
         run: |
           cd dist
           zip -r miniflux.koplugin.zip miniflux.koplugin/
-          ls -la miniflux.koplugin.zip
+          zip -r "miniflux.koplugin-v${{ steps.get_version.outputs.version }}.zip" miniflux.koplugin/
+          ls -la *.zip
           echo "=== ZIP contents preview ==="
           unzip -l miniflux.koplugin.zip | head -20
 
@@ -122,7 +123,9 @@ jobs:
             1. Download the artifact zip file
             2. Extract it to your KOReader plugins directory
             3. Restart KOReader and enable the plugin
-          files: dist/miniflux.koplugin.zip
+          files: |
+            dist/miniflux.koplugin.zip
+            dist/miniflux.koplugin-v${{ steps.get_version.outputs.version }}.zip
           draft: false
           prerelease: false
         env:
