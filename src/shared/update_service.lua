@@ -304,7 +304,7 @@ function UpdateService:checkForUpdates(config)
         logger.info(log_prefix, 'Found', #latest_release.assets, 'assets')
         for i, asset in ipairs(latest_release.assets) do
             logger.info(log_prefix, 'Asset', i .. ':', asset.name or 'unnamed')
-            if asset.name and asset.name:match('%.koplugin%.zip$') then
+            if asset.name and (asset.name:match('%.koplugin%.zip$') or asset.name:match('%.zip$')) then
                 logger.info(log_prefix, 'Found plugin ZIP:', asset.name)
                 update_info.download_url = asset.browser_download_url
                 update_info.download_size = asset.size

@@ -64,17 +64,29 @@ local function iso8601ToUnix(iso_string)
 end
 
 ---Format published date to DD/MM/YYYY HH:MM string in local time
----@param published_at? string ISO-8601 timestamp string
+---Format published date to DD/MM/YYYY HH:MM string in local time (cached on entry object for performance)
+---@param entry table Miniflux entry object
 ---@return string|nil formatted_date
-local function formatPublishedDate(published_at)
-    if not published_at then
+local function formatPublishedDate(entry)
+    if not entry then
+        return nil
+    end
+    if entry._formatted_date ~= nil then
+        return entry._formatted_date ~= '' and entry._formatted_date or nil
+    end
+    local published_at = entry.published_at
+    if not published_at or published_at == '' then
+        entry._formatted_date = ''
         return nil
     end
     local unix_sec = iso8601ToUnix(published_at)
     if not unix_sec then
+        entry._formatted_date = ''
         return nil
     end
-    return os.date('%d/%m/%Y %H:%M', unix_sec)
+    local formatted = os.date('%d/%m/%Y %H:%M', unix_sec)
+    entry._formatted_date = formatted or ''
+    return formatted
 end
 
 ---@alias EntriesViewConfig {feeds?: Feeds, categories?: Categories, entries: Entries, settings: MinifluxSettings, entry_type: "unread"|"feed"|"category", id?: number, page_state?: number, onSelectItem: function}
@@ -211,7 +223,7 @@ function EntriesView.buildSingleItem(entry, config)
         status_indicator = status_indicator .. '★ '
     end
 
-    local date_str = formatPublishedDate(entry.published_at)
+    local date_str = formatPublishedDate(entry)
     local display_text
     if date_str then
         display_text = status_indicator .. date_str .. ' | ' .. entry_title

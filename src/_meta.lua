@@ -15,6 +15,6 @@ return {
     description = _([[Read RSS entries from your Miniflux server.]]),
     version = '0.0.20',
     author = 'Alexandru Popa',
-    repo_owner = 'zanderp',
-    repo_name = 'miniflux.koplugin',
+    repo_owner = 'KiwiDev808',
+    repo_name = 'miniflux_koplugin',
 }
