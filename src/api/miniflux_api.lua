@@ -189,6 +189,18 @@ function MinifluxAPI:getEntries(options, config)
     })
 end
 
+---Save entry to third-party services. POST /v1/entries/:id/save
+---@param entry_id number Entry ID
+---@param config? table Configuration with optional dialogs
+---@return table|nil result, Error|nil error
+function MinifluxAPI:saveEntry(entry_id, config)
+    config = config or {}
+    local endpoint = '/entries/' .. tostring(entry_id) .. '/save'
+    return self.api_client:post(endpoint, {
+        dialogs = config.dialogs,
+    })
+end
+
 ---Get a single entry by ID (full content, same as web app entry view)
 ---@param entry_id number Entry ID
 ---@param config? table Configuration with optional dialogs

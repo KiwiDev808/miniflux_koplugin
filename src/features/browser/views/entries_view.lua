@@ -12,6 +12,71 @@ local _ = require('gettext')
 
 local EntriesView = {}
 
+---Parse ISO-8601 timestamp string to Unix seconds (UTC).
+---@param iso_string string ISO-8601 datetime string
+---@return number|nil unix_secs
+local function iso8601ToUnix(iso_string)
+    if not iso_string or type(iso_string) ~= 'string' then
+        return nil
+    end
+
+    local Y, M, D, h, m, sec, sign, tzh, tzm =
+        iso_string:match('^(%d+)%-(%d+)%-(%d+)T(%d+):(%d+):(%d+)%.?%d*([%+%-])(%d%d):(%d%d)$')
+
+    if not Y then
+        Y, M, D, h, m, sec = iso_string:match('^(%d+)%-(%d+)%-(%d+)T(%d+):(%d+):(%d+)%.?%d*[Zz]$')
+        if Y then
+            sign, tzh, tzm = '+', 0, 0
+        end
+    end
+
+    if not Y then
+        return nil
+    end
+
+    Y, M, D = tonumber(Y), tonumber(M), tonumber(D)
+    h, m, sec = tonumber(h), tonumber(m), tonumber(sec)
+    tzh, tzm = tonumber(tzh), tonumber(tzm)
+
+    local y = Y
+    local mo = M
+    if mo <= 2 then
+        y = y - 1
+        mo = mo + 12
+    end
+
+    local era = math.floor(y / 400)
+    local yoe = y - era * 400
+    local doy = math.floor((153 * (mo - 3) + 2) / 5) + D - 1
+    local doe = yoe * 365 + math.floor(yoe / 4) - math.floor(yoe / 100) + doy
+    local days = era * 146097 + doe - 719468
+
+    local utc_secs = days * 86400 + h * 3600 + m * 60 + sec
+
+    local offs = tzh * 3600 + tzm * 60
+    if sign == '+' then
+        utc_secs = utc_secs - offs
+    else
+        utc_secs = utc_secs + offs
+    end
+
+    return utc_secs
+end
+
+---Format published date to DD/MM/YYYY HH:MM string in local time
+---@param published_at? string ISO-8601 timestamp string
+---@return string|nil formatted_date
+local function formatPublishedDate(published_at)
+    if not published_at then
+        return nil
+    end
+    local unix_sec = iso8601ToUnix(published_at)
+    if not unix_sec then
+        return nil
+    end
+    return os.date('%d/%m/%Y %H:%M', unix_sec)
+end
+
 ---@alias EntriesViewConfig {feeds?: Feeds, categories?: Categories, entries: Entries, settings: MinifluxSettings, entry_type: "unread"|"feed"|"category", id?: number, page_state?: number, onSelectItem: function}
 
 ---Complete entries view component - returns view data for rendering
@@ -146,7 +211,13 @@ function EntriesView.buildSingleItem(entry, config)
         status_indicator = status_indicator .. '★ '
     end
 
-    local display_text = status_indicator .. entry_title
+    local date_str = formatPublishedDate(entry.published_at)
+    local display_text
+    if date_str then
+        display_text = status_indicator .. date_str .. ' | ' .. entry_title
+    else
+        display_text = status_indicator .. entry_title
+    end
 
     if config.show_feed_names and entry.feed and entry.feed.title then
         display_text = display_text .. ' (' .. entry.feed.title .. ')'
