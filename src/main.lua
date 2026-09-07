@@ -140,10 +140,10 @@ function Miniflux:init()
         db_name = 'miniflux_cache.sqlite',
     })
 
-    -- Create update service instance (GitHub releases: zanderp/miniflux.koplugin)
+    -- Create update service instance (GitHub releases: KiwiDev808/miniflux_koplugin)
     self.update_service = UpdateService:new({
-        repo_owner = 'zanderp',
-        repo_name = 'miniflux.koplugin',
+        repo_owner = 'KiwiDev808',
+        repo_name = 'miniflux_koplugin',
         plugin_path = self.path,
         logger_prefix = 'Miniflux:',
     })

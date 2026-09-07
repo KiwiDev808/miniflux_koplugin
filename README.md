@@ -2,7 +2,7 @@
 
 A KOReader plugin that lets you read RSS entries from a [Miniflux](https://miniflux.app/) server on your e-reader, online or offline.
 
-**Releases:** [zanderp/miniflux.koplugin](https://github.com/zanderp/miniflux.koplugin/releases)
+**Releases:** [KiwiDev808/miniflux_koplugin](https://github.com/KiwiDev808/miniflux_koplugin/releases)
 
 ## Features
 
@@ -44,11 +44,11 @@ A KOReader plugin that lets you read RSS entries from a [Miniflux](https://minif
 ### Menu & updates
 
 - **Tools menu**: Plugin appears under **Tools** (when supported by KOReader) for quicker access.
-- **Updates**: Check for updates from [zanderp/miniflux.koplugin](https://github.com/zanderp/miniflux.koplugin/releases) (Settings → Check for updates).
+- **Updates**: Check for updates from [KiwiDev808/miniflux_koplugin](https://github.com/KiwiDev808/miniflux_koplugin/releases) (Settings → Check for updates).
 
 ## Installation
 
-1. Download the [latest release](https://github.com/zanderp/miniflux.koplugin/releases/latest) (e.g. `miniflux.koplugin-0.0.20.zip`).
+1. Download the [latest release](https://github.com/KiwiDev808/miniflux_koplugin/releases/latest) (e.g. `miniflux.koplugin-0.0.20.zip`).
 2. Unzip and copy the **miniflux.koplugin** folder into KOReader’s plugin directory.
 3. Enable the plugin in KOReader.
 
@@ -124,7 +124,7 @@ A KOReader plugin that lets you read RSS entries from a [Miniflux](https://minif
   - [x] Re-download missing images for all downloaded entries (Settings)
 - [x] **Menu & updates**
   - [x] Plugin in main Tools menu (when supported)
-  - [x] Check for updates from GitHub (zanderp/miniflux.koplugin)
+  - [x] Check for updates from GitHub (KiwiDev808/miniflux_koplugin)
 
 ### ✅ Reading experience
 
@@ -178,4 +178,4 @@ After `task build`, symlink `dist/miniflux.koplugin` into KOReader’s plugins d
 
 ## Contributing
 
-Contributions are welcome: [open an issue](https://github.com/zanderp/miniflux.koplugin/issues) or submit a pull request at [zanderp/miniflux.koplugin](https://github.com/zanderp/miniflux.koplugin).
+Contributions are welcome: [open an issue](https://github.com/KiwiDev808/miniflux_koplugin/issues) or submit a pull request at [KiwiDev808/miniflux_koplugin](https://github.com/KiwiDev808/miniflux_koplugin).

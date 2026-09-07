@@ -159,6 +159,14 @@ function Entries:toggleBookmark(entry_id, config)
     return self.miniflux.api:toggleEntryBookmark(entry_id, config)
 end
 
+---Save entry to third-party services
+---@param entry_id number Entry ID
+---@param config? table Configuration with optional dialogs
+---@return table|nil result, Error|nil error
+function Entries:saveEntry(entry_id, config)
+    return self.miniflux.api:saveEntry(entry_id, config)
+end
+
 ---Test connection to Miniflux server (useful for settings)
 -- TODO: Move this to a dedicated system/health domain - this doesn't belong in entries
 -- Other endpoints like /version, /readiness might also need a home outside domain boundaries

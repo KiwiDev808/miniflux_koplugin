@@ -212,6 +212,38 @@ function MinifluxEndOfBook:showDialog(entry_info)
                 end)
             end,
         },
+        {
+            text = _('Save entry'),
+            callback = function()
+                UIManager:close(dialog)
+                local entry_id = entry_info.entry_id
+                local miniflux = self.miniflux
+                UIManager:scheduleIn(0, function()
+                    if not EntryValidation.isValidId(entry_id) then
+                        Notification:warning(_('Cannot save entry: invalid entry ID'))
+                        return
+                    end
+                    if not miniflux or not miniflux.entries then
+                        Notification:warning(_('Cannot save entry'))
+                        return
+                    end
+                    local ok, ret = pcall(function()
+                        local r, e = miniflux.entries:saveEntry(entry_id)
+                        return { result = r, err = e }
+                    end)
+                    if not ok then
+                        Notification:warning(_('Failed to save entry'))
+                        return
+                    end
+                    local err = type(ret) == 'table' and ret.err or nil
+                    if err then
+                        Notification:warning(err.message or _('Failed to save entry'))
+                    else
+                        Notification:success(_('Entry saved'))
+                    end
+                end)
+            end,
+        },
     }
     if not from_html_viewer then
         table.insert(row2, 1, {
