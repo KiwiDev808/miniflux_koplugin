@@ -38,6 +38,7 @@ function DeleteByDateRange.showDialog()
         return
     end
 
+    local dialog
     local buttons = {}
     for _, r in ipairs(RANGES) do
         local older_than = r.days * SECONDS_PER_DAY
@@ -66,7 +67,6 @@ function DeleteByDateRange.showDialog()
         },
     })
 
-    local dialog
     dialog = ButtonDialog:new({
         title = _('Delete entries by date'),
         title_align = 'center',
