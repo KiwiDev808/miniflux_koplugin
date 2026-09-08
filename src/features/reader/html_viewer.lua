@@ -103,10 +103,10 @@ local function mimeFromMagic(data)
     if not data or #data < 4 then
         return 'image/jpeg'
     end
-    if data:sub(1, 3) == '\x89PN' then
+    if data:sub(1, 3) == '\137PN' then
         return 'image/png'
     end
-    if data:sub(1, 2) == '\xff\xd8' then
+    if data:sub(1, 2) == '\255\216' then
         return 'image/jpeg'
     end
     if data:sub(1, 4) == 'GIF8' then
