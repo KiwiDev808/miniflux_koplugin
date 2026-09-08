@@ -23,7 +23,7 @@ local MSG_FINDING_NEXT = 'Finding next entry...'
 ---@param iso_string string ISO-8601 datetime string
 ---@return number|nil unix_secs Unix timestamp, or nil on parse error
 ---@return Error|nil error Error if format invalid
-function iso8601_to_unix(iso_string)
+local function iso8601_to_unix(iso_string)
     if not iso_string or type(iso_string) ~= 'string' then
         return nil, Error.new(_('Invalid ISO-8601 timestamp format'))
     end

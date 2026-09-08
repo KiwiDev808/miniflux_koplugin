@@ -74,7 +74,7 @@ local MinifluxAPI = EventListener:extend({})
 ---Create a new HttpClient instance
 ---@param config {server_address: string, api_token: string} Configuration for HttpClient
 ---@return HttpClient<APIBody, ApiOptions>
-function createHttpClient(config)
+local function createHttpClient(config)
     local HttpClient = require('shared/http_client')
     return HttpClient:new({
         server_address = config.server_address,

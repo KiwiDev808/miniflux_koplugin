@@ -23,7 +23,7 @@ local MinifluxEventName = {
 ---Broadcast event to all widgets (all widgets receive it)
 ---@param event_name string # The name of the event
 ---@param payload? table # The payload data of the event
-function broadcastEvent(event_name, payload)
+local function broadcastEvent(event_name, payload)
     UIManager:broadcastEvent(Event:new(event_name, payload))
 end
 
