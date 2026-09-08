@@ -1,7 +1,7 @@
 --[[--
 **Miniflux Plugin for KOReader**
 
-This plugin provides integration with Miniflux RSS reader.
+This plugin provides integration with Miniflux RSS reader!
 This main file acts as a coordinator, delegating to specialized modules.
 --]]
 
