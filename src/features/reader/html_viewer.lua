@@ -176,8 +176,9 @@ local function inlineImages(html, page_url)
     if #urls == 0 then
         return html
     end
+    local unpack_fn = unpack or table.unpack
     if #urls > MAX_IMAGES_TO_INLINE then
-        urls = { table.unpack(urls, 1, MAX_IMAGES_TO_INLINE) }
+        urls = { unpack_fn(urls, 1, MAX_IMAGES_TO_INLINE) }
     end
     local cache = {}
     local total_bytes = 0
