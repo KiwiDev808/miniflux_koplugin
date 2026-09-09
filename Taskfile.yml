@@ -18,7 +18,7 @@ tasks:
   lint:
     desc: Run selene static analysis
     cmds:
-      - selene src/ typedefs/
+      - selene --deny errors src/ typedefs/
       - echo "✅ No linting issues found"
 
   lsp-check:

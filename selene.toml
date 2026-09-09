@@ -69,13 +69,12 @@ read_only_globals = [
 
 # Lint rules configuration
 [rules]
-# Core issues to catch
-unused_variable = "allow"
-unused_argument = "allow"
-unused_loop_variable = "allow"
+# Core issues to catch - keep these warnings active
+unused_variable = "warn"
+unused_argument = "warn"
+unused_loop_variable = "warn"
 undefined_variable = "warn"
-shadowing = "allow"
-multiple_statements = "allow"
+shadowing = "warn"
 empty_block = "warn"
 
 mixed_table = "allow"  # KOReader key_events inherently use mixed tables
