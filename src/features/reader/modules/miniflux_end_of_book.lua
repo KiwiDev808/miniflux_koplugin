@@ -110,7 +110,7 @@ function MinifluxEndOfBook:showDialog(entry_info)
 
     -- Use status for business logic (fallback to SDR if doc_settings unavailable)
     local entry_status = (metadata and metadata.status) or (sdr_metadata and sdr_metadata.status) or 'unread'
-    local entry_starred = (metadata and metadata.starred == true) or (sdr_metadata and sdr_metadata.starred == true) or false
+    local _entry_starred = (metadata and metadata.starred == true) or (sdr_metadata and sdr_metadata.starred == true) or false
 
     -- Re-read current starred/status at action time. If user toggled bookmark this session, skip auto-delete.
     local BookmarkToggledFlag = require('shared/bookmark_toggled_flag')
@@ -254,7 +254,10 @@ function MinifluxEndOfBook:showDialog(entry_info)
                     Notification:warning(_('Cannot delete: invalid entry ID'))
                     return
                 end
-                local success = EntryPaths.deleteLocalEntry(entry_info.entry_id, { open_folder = false })
+                local success = EntryPaths.deleteLocalEntry(
+                    entry_info.entry_id,
+                    { open_folder = false }
+                )
                 if success then
                     local ReaderUI = require('apps/reader/readerui')
                     if ReaderUI.instance then
@@ -296,7 +299,10 @@ function MinifluxEndOfBook:showDialog(entry_info)
                     end
                     if entry_id_to_delete then
                         UIManager:scheduleIn(0, function()
-                            EntryPaths.deleteLocalEntry(entry_id_to_delete, { silent = true, always_remove_from_history = true })
+                            EntryPaths.deleteLocalEntry(
+                                entry_id_to_delete,
+                                { silent = true, always_remove_from_history = true }
+                            )
                         end)
                     end
                 end,
@@ -324,7 +330,10 @@ function MinifluxEndOfBook:showDialog(entry_info)
                     end
                     if entry_id_to_delete then
                         UIManager:scheduleIn(0, function()
-                            EntryPaths.deleteLocalEntry(entry_id_to_delete, { silent = true, always_remove_from_history = true })
+                            EntryPaths.deleteLocalEntry(
+                                entry_id_to_delete,
+                                { silent = true, always_remove_from_history = true }
+                            )
                         end)
                     end
                 end,
@@ -365,10 +374,10 @@ function MinifluxEndOfBook:showDialog(entry_info)
                         local auto_delete = self.miniflux.settings.auto_delete_read_on_close
                             and EntryValidation.isEntryRead(current_status)
                             and not current_starred
-                        local entry_id_to_delete =
-                            (auto_delete and EntryValidation.isValidId(entry_info.entry_id))
-                                and entry_info.entry_id
-                            or nil
+                        local entry_id_to_delete = nil
+                        if auto_delete and EntryValidation.isValidId(entry_info.entry_id) then
+                            entry_id_to_delete = entry_info.entry_id
+                        end
                         BookmarkToggledFlag.toggled = false
                         local ReaderUI = require('apps/reader/readerui')
                         if ReaderUI.instance then
@@ -418,7 +427,10 @@ function MinifluxEndOfBook:showDialog(entry_info)
                         end
                         UIManager:scheduleIn(0.15, function()
                             if auto_delete and EntryValidation.isValidId(entry_id) then
-                                EntryPaths.deleteLocalEntry(entry_id, { silent = true, always_remove_from_history = true })
+                                EntryPaths.deleteLocalEntry(
+                                    entry_id,
+                                    { silent = true, always_remove_from_history = true }
+                                )
                             end
                             EntryPaths.openKoreaderHomeFolder()
                         end)
@@ -430,7 +442,10 @@ function MinifluxEndOfBook:showDialog(entry_info)
                                 ReaderUI.instance:onClose()
                             end
                             UIManager:scheduleIn(0.15, function()
-                                EntryPaths.deleteLocalEntry(entry_id, { silent = true, always_remove_from_history = true })
+                                EntryPaths.deleteLocalEntry(
+                                    entry_id,
+                                    { silent = true, always_remove_from_history = true }
+                                )
                                 EntryPaths.openKoreaderHomeFolder()
                             end)
                         else
@@ -494,7 +509,10 @@ function MinifluxEndOfBook:showDialog(entry_info)
         navigateToEntry(direction)
         if entry_id_to_delete then
             UIManager:scheduleIn(0, function()
-                EntryPaths.deleteLocalEntry(entry_id_to_delete, { silent = true, always_remove_from_history = true })
+                EntryPaths.deleteLocalEntry(
+                    entry_id_to_delete,
+                    { silent = true, always_remove_from_history = true }
+                )
             end)
         end
         return true
@@ -533,7 +551,11 @@ function MinifluxEndOfBook:returnToBrowser()
         miniflux.browser:open()
         return
     end
-    logger.dbg('[Miniflux:EndOfBook] returnToBrowser context:', context.type, context.id or context.search or '')
+    logger.dbg(
+        '[Miniflux:EndOfBook] returnToBrowser context:',
+        context.type,
+        context.id or context.search or ''
+    )
 
     local view_name
     local nav_context

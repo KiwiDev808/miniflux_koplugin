@@ -84,15 +84,19 @@ local function base64Encode(data)
     for i = 1, #data, 3 do
         local a, b, c = data:byte(i, i + 2)
         local n = (a or 0) * 65536 + (b or 0) * 256 + (c or 0)
-        for j = 1, 4 do
+        for _ = 1, 4 do
             local idx = math.floor(n / 262144) % 64 + 1
             s[#s + 1] = b64:sub(idx, idx)
             n = (n % 262144) * 64
         end
     end
     local pad = ({ 0, 2, 1 })[#data % 3 + 1]
-    for _ = 1, pad do s[#s] = nil end
-    for _ = 1, pad do s[#s + 1] = '=' end
+    for _ = 1, pad do
+        s[#s] = nil
+    end
+    for _ = 1, pad do
+        s[#s + 1] = '='
+    end
     return table.concat(s)
 end
 
@@ -103,10 +107,10 @@ local function mimeFromMagic(data)
     if not data or #data < 4 then
         return 'image/jpeg'
     end
-    if data:sub(1, 3) == '\x89PN' then
+    if data:sub(1, 3) == '\137PN' then
         return 'image/png'
     end
-    if data:sub(1, 2) == '\xff\xd8' then
+    if data:sub(1, 2) == '\255\216' then
         return 'image/jpeg'
     end
     if data:sub(1, 4) == 'GIF8' then
@@ -177,7 +181,7 @@ local function inlineImages(html, page_url)
         return html
     end
     if #urls > MAX_IMAGES_TO_INLINE then
-        urls = { table.unpack(urls, 1, MAX_IMAGES_TO_INLINE) }
+        urls = { unpack(urls, 1, MAX_IMAGES_TO_INLINE) }
     end
     local cache = {}
     local total_bytes = 0
@@ -229,7 +233,7 @@ end
 ---@param url string Article URL to fetch and display
 ---@param title string|nil Optional title for the viewer
 ---@param opts table|nil Optional: { parent_browser = Browser } to track overlay so browser can close it first and avoid hang
-function HtmlViewer.showUrl(url, title, opts)
+function HtmlViewer.showUrl(url, _title, opts)
     logger.dbg('[Miniflux:HtmlViewer] showUrl', url and url:sub(1, 60) or 'nil')
     if not url or url == '' then
         Notification:error(_('No URL provided'))
@@ -525,7 +529,9 @@ function HtmlViewer.showUrl(url, title, opts)
             if parent_browser and parent_browser.current_overlay == html_box then
                 parent_browser.current_overlay = nil
             end
-            if orig_onCloseWidget then orig_onCloseWidget(self) end
+            if orig_onCloseWidget then
+                orig_onCloseWidget(self)
+            end
         end
 
         if parent_browser then
@@ -535,7 +541,9 @@ function HtmlViewer.showUrl(url, title, opts)
         -- When opening a link in external browser, close the viewer
         local orig_link_cb = html_box.html_link_tapped_callback
         html_box.html_link_tapped_callback = function(link)
-            if orig_link_cb then orig_link_cb(link) end
+            if orig_link_cb then
+                orig_link_cb(link)
+            end
             if link and link.uri and Device.openLink and not (Device.isKindle or Device.isKobo or Device.isPocketBook) then
                 doClose()
             end

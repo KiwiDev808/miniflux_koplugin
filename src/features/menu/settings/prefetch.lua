@@ -1,5 +1,3 @@
-local ButtonDialog = require('ui/widget/buttondialog')
-local UIManager = require('ui/uimanager')
 local Notification = require('shared/widgets/notification')
 local EntryPaths = require('domains/utils/entry_paths')
 local BatchDownloadEntriesWorkflow = require('features/browser/download/batch_download_entries_workflow')
@@ -31,12 +29,50 @@ function Prefetch.getMenuItem(plugin)
                     text = n == 0 and _('Prefetch count: 0 (off)') or T(_('Prefetch count: %1'), n),
                     keep_menu_open = true,
                     sub_item_table_func = function()
+                        local function setPrefetchCount(tm, count, msg)
+                            plugin.settings.prefetch_count = count
+                            plugin.settings:save()
+                            Notification:info(msg)
+                            if tm and tm.updateItems then
+                                tm:updateItems()
+                            end
+                        end
                         return {
-                            { text = _('0 (off)'), keep_menu_open = true, callback = function(tm) plugin.settings.prefetch_count = 0; plugin.settings:save(); Notification:info(_('Prefetch: off')); if tm and tm.updateItems then tm:updateItems() end end },
-                            { text = _('1'), keep_menu_open = true, callback = function(tm) plugin.settings.prefetch_count = 1; plugin.settings:save(); Notification:info(T(_('Prefetch count: %1'), 1)); if tm and tm.updateItems then tm:updateItems() end end },
-                            { text = _('2'), keep_menu_open = true, callback = function(tm) plugin.settings.prefetch_count = 2; plugin.settings:save(); Notification:info(T(_('Prefetch count: %1'), 2)); if tm and tm.updateItems then tm:updateItems() end end },
-                            { text = _('3'), keep_menu_open = true, callback = function(tm) plugin.settings.prefetch_count = 3; plugin.settings:save(); Notification:info(T(_('Prefetch count: %1'), 3)); if tm and tm.updateItems then tm:updateItems() end end },
-                            { text = _('5'), keep_menu_open = true, callback = function(tm) plugin.settings.prefetch_count = 5; plugin.settings:save(); Notification:info(T(_('Prefetch count: %1'), 5)); if tm and tm.updateItems then tm:updateItems() end end },
+                            {
+                                text = _('0 (off)'),
+                                keep_menu_open = true,
+                                callback = function(tm)
+                                    setPrefetchCount(tm, 0, _('Prefetch: off'))
+                                end,
+                            },
+                            {
+                                text = _('1'),
+                                keep_menu_open = true,
+                                callback = function(tm)
+                                    setPrefetchCount(tm, 1, T(_('Prefetch count: %1'), 1))
+                                end,
+                            },
+                            {
+                                text = _('2'),
+                                keep_menu_open = true,
+                                callback = function(tm)
+                                    setPrefetchCount(tm, 2, T(_('Prefetch count: %1'), 2))
+                                end,
+                            },
+                            {
+                                text = _('3'),
+                                keep_menu_open = true,
+                                callback = function(tm)
+                                    setPrefetchCount(tm, 3, T(_('Prefetch count: %1'), 3))
+                                end,
+                            },
+                            {
+                                text = _('5'),
+                                keep_menu_open = true,
+                                callback = function(tm)
+                                    setPrefetchCount(tm, 5, T(_('Prefetch count: %1'), 5))
+                                end,
+                            },
                         }
                     end,
                 },

@@ -53,19 +53,22 @@ function MainView.show(config)
                     logger.dbg('[Miniflux:MainView] async load: miniflux nil, skip')
                     return
                 end
-                local ok, loaded = pcall(MainView.loadData, miniflux, { silent = true })
-                if not ok or not loaded or type(loaded) ~= 'table' then
-                    logger.dbg('[Miniflux:MainView] async load: loadData failed or empty, ok:', ok)
+                local load_ok, loaded = pcall(MainView.loadData, miniflux, { silent = true })
+                if not load_ok or not loaded or type(loaded) ~= 'table' then
+                    logger.dbg(
+    '[Miniflux:MainView] async load: loadData failed or empty, ok:',
+    load_ok
+)
                     return
                 end
                 MainView._cached_counts = loaded
                 -- Only refresh if browser is still shown (user may have closed it)
                 if browser and UIManager:isWidgetShown(browser) then
                     logger.dbg('[Miniflux:MainView] async load: refreshing current view')
-                    local ok, _err2 = pcall(function()
+                    local refresh_ok, _err2 = pcall(function()
                         browser:refreshCurrentViewData()
                     end)
-                    if not ok then
+                    if not refresh_ok then
                         logger.dbg('[Miniflux:MainView] async load: refreshCurrentViewData failed')
                         MainView._cached_counts = nil
                     end
@@ -115,7 +118,9 @@ function MainView.loadData(miniflux, opts)
     -- Get unread count from entries domain
     local unread_count, unread_err = miniflux.entries:getUnreadCount()
     if unread_err then
-        if loading_notification then loading_notification:close() end
+        if loading_notification then
+            loading_notification:close()
+        end
         return nil, unread_err.message
     end
     ---@cast unread_count -nil
@@ -123,7 +128,9 @@ function MainView.loadData(miniflux, opts)
     -- Get feeds count from feeds domain
     local feeds_count, feeds_err = miniflux.feeds:getFeedCount()
     if feeds_err then
-        if loading_notification then loading_notification:close() end
+        if loading_notification then
+            loading_notification:close()
+        end
         return nil, feeds_err.message
     end
     ---@cast feeds_count -nil
@@ -131,12 +138,16 @@ function MainView.loadData(miniflux, opts)
     -- Get categories count from categories domain
     local categories_count, categories_err = miniflux.categories:getCategoryCount()
     if categories_err then
-        if loading_notification then loading_notification:close() end
+        if loading_notification then
+            loading_notification:close()
+        end
         return nil, categories_err.message
     end
     ---@cast categories_count -nil
 
-    if loading_notification then loading_notification:close() end
+    if loading_notification then
+        loading_notification:close()
+    end
 
     -- Starred count (bookmarked entries)
     local starred_result, _starred_err = miniflux.entries:getEntries({

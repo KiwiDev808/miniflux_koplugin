@@ -6,7 +6,6 @@ Shows entries matching a search query via Miniflux API search param.
 --]]
 
 local EntriesView = require('features/browser/views/entries_view')
-local ViewUtils = require('features/browser/views/view_utils')
 local _ = require('gettext')
 local T = require('ffi/util').template
 
@@ -15,7 +14,7 @@ local SearchEntriesView = {}
 ---@alias SearchEntriesViewConfig {entries: Entries, settings: MinifluxSettings, page_state?: number, search: string, onSelectItem: function}
 
 ---Build view data for search (used for both success and error/empty cases so back always works)
-local function buildSearchView(search, entries, subtitle_suffix)
+local function buildSearchView(_search, entries, subtitle_suffix)
     local menu_items = EntriesView.buildItems({
         entries = entries or {},
         show_feed_names = true,

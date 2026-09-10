@@ -359,7 +359,7 @@ end
 ---@param opts TryLocalFileOptions Options for local file attempt
 ---@return boolean success True if local file was opened
 function Navigation.tryLocalFileFirst(opts)
-    local entry_info = opts.entry_info
+    local _entry_info = opts.entry_info
     local entry_data = opts.entry_data
     local context = opts.context
     local miniflux = opts.miniflux

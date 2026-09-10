@@ -198,13 +198,13 @@ This will:
                                 -- Defer so dialog closes first; avoid crash/restart when switching to file manager
                                 local download_dir = EntryPaths.getDownloadDir()
                                 UIManager:scheduleIn(0, function()
-                                    local ok, err = pcall(function()
-                                        local FileManager = require('apps/filemanager/filemanager')
-                                        FileManager:showFiles(download_dir)
-                                    end)
-                                    if not ok then
-                                        Notification:error(_('Could not open folder'))
-                                    end
+                                local open_ok, open_err = pcall(function()
+                                    local FileManager = require('apps/filemanager/filemanager')
+                                    FileManager:showFiles(download_dir)
+                                end)
+                                if not open_ok then
+                                    Notification:error(_('Could not open folder: ') .. tostring(open_err))
+                                end
                                 end)
                             end,
                         }))

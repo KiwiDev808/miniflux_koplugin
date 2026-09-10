@@ -23,12 +23,18 @@ function UrlFetch.fetch(url, opts)
     local default_headers = { ['User-Agent'] = 'KOReader/1.0 (Miniflux)' }
     local headers = opts.headers and (function()
         local h = {}
-        for k, v in pairs(default_headers) do h[k] = v end
-        for k, v in pairs(opts.headers) do h[k] = v end
+        for k, v in pairs(default_headers) do
+            h[k] = v
+        end
+        for k, v in pairs(opts.headers) do
+            h[k] = v
+        end
         return h
     end)() or (function()
         local h = {}
-        for k, v in pairs(default_headers) do h[k] = v end
+        for k, v in pairs(default_headers) do
+            h[k] = v
+        end
         return h
     end)()
     if opts.referer and opts.referer ~= '' then
@@ -44,7 +50,7 @@ function UrlFetch.fetch(url, opts)
     }
 
     socketutil:set_timeout(timeout * 1000, timeout * 1000)
-    local code, resp_headers, status = socket.skip(1, http.request(request))
+    local code, resp_headers, _status = socket.skip(1, http.request(request))
     socketutil:reset_timeout()
 
     if resp_headers == nil then
