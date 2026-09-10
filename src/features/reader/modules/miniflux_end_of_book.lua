@@ -327,7 +327,10 @@ function MinifluxEndOfBook:showDialog(entry_info)
                     end
                     if entry_id_to_delete then
                         UIManager:scheduleIn(0, function()
-                            EntryPaths.deleteLocalEntry(entry_id_to_delete, { silent = true, always_remove_from_history = true })
+                            EntryPaths.deleteLocalEntry(
+                                entry_id_to_delete,
+                                { silent = true, always_remove_from_history = true }
+                            )
                         end)
                     end
                 end,
@@ -421,7 +424,10 @@ function MinifluxEndOfBook:showDialog(entry_info)
                         end
                         UIManager:scheduleIn(0.15, function()
                             if auto_delete and EntryValidation.isValidId(entry_id) then
-                                EntryPaths.deleteLocalEntry(entry_id, { silent = true, always_remove_from_history = true })
+                                EntryPaths.deleteLocalEntry(
+                                    entry_id,
+                                    { silent = true, always_remove_from_history = true }
+                                )
                             end
                             EntryPaths.openKoreaderHomeFolder()
                         end)
@@ -433,7 +439,10 @@ function MinifluxEndOfBook:showDialog(entry_info)
                                 ReaderUI.instance:onClose()
                             end
                             UIManager:scheduleIn(0.15, function()
-                                EntryPaths.deleteLocalEntry(entry_id, { silent = true, always_remove_from_history = true })
+                                EntryPaths.deleteLocalEntry(
+                                    entry_id,
+                                    { silent = true, always_remove_from_history = true }
+                                )
                                 EntryPaths.openKoreaderHomeFolder()
                             end)
                         else
@@ -497,7 +506,10 @@ function MinifluxEndOfBook:showDialog(entry_info)
         navigateToEntry(direction)
         if entry_id_to_delete then
             UIManager:scheduleIn(0, function()
-                EntryPaths.deleteLocalEntry(entry_id_to_delete, { silent = true, always_remove_from_history = true })
+                EntryPaths.deleteLocalEntry(
+                    entry_id_to_delete,
+                    { silent = true, always_remove_from_history = true }
+                )
             end)
         end
         return true
