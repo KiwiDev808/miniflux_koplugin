@@ -10,7 +10,6 @@ local _ = require('gettext')
 
 local StorageUtils = {}
 
-local SECONDS_PER_DAY = 24 * 60 * 60
 
 ---Parse ISO-8601 date string to unix seconds (simple: only YYYY-MM-DD or full ISO)
 ---@param iso_string string

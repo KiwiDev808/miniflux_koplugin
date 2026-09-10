@@ -110,7 +110,7 @@ function MinifluxEndOfBook:showDialog(entry_info)
 
     -- Use status for business logic (fallback to SDR if doc_settings unavailable)
     local entry_status = (metadata and metadata.status) or (sdr_metadata and sdr_metadata.status) or 'unread'
-    local entry_starred = (metadata and metadata.starred == true) or (sdr_metadata and sdr_metadata.starred == true) or false
+    local _entry_starred = (metadata and metadata.starred == true) or (sdr_metadata and sdr_metadata.starred == true) or false
 
     -- Re-read current starred/status at action time. If user toggled bookmark this session, skip auto-delete.
     local BookmarkToggledFlag = require('shared/bookmark_toggled_flag')

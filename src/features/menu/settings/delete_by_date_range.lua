@@ -4,7 +4,6 @@ local Notification = require('shared/widgets/notification')
 local Files = require('shared/files')
 local StorageUtils = require('domains/utils/storage_utils')
 local FFIUtil = require('ffi/util')
-local lfs = require('libs/libkoreader-lfs')
 local _ = require('gettext')
 local T = require('ffi/util').template
 

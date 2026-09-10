@@ -157,7 +157,6 @@ function MinifluxBrowser:onLeftButtonTap()
         return
     end
 
-    local UIManager = require('ui/uimanager')
     local ButtonDialog = require('ui/widget/buttondialog')
     local NetworkMgr = require('ui/network/manager')
 
@@ -260,7 +259,6 @@ function MinifluxBrowser:invalidateAllCaches()
     if self.miniflux and self.miniflux.http_cache then
         self.miniflux.http_cache:clear()
     end
-    local MainView = require('features/browser/views/main_view')
     MainView._cached_counts = nil
     local MinifluxEvent = require('shared/event')
     MinifluxEvent:broadcastMinifluxInvalidateCache()
@@ -383,7 +381,6 @@ function MinifluxBrowser:close()
                 UIManager:close(miniflux, 'full')
             end
             -- Same as Close button in end-of-entry: if auto-delete read on close and we returned from a read entry, delete it + clean history.
-            local EntryPaths = require('domains/utils/entry_paths')
             local EntryValidation = require('domains/utils/entry_validation')
             local LastReturnedEntry = require('shared/last_returned_entry')
             local entry_id = LastReturnedEntry.entry_id
@@ -551,7 +548,9 @@ function MinifluxBrowser:getRouteHandlers(nav_config)
                     local ok = self.miniflux.entries:markAllUnreadAsRead({
                         dialogs = { error = { text = _('Failed to mark all as read') } },
                     })
-                    if loading then loading:close() end
+                    if loading then
+                        loading:close()
+                    end
                     if ok then
                         self:invalidateAllCaches()
                         self:refreshCurrentViewData()
@@ -577,7 +576,9 @@ function MinifluxBrowser:getRouteHandlers(nav_config)
                     local ok = self.miniflux.entries:markAllReadAsRemoved({
                         dialogs = { error = { text = _('Failed to remove read entries') } },
                     })
-                    if loading then loading:close() end
+                    if loading then
+                        loading:close()
+                    end
                     if ok then
                         self:invalidateAllCaches()
                         self:refreshCurrentViewData()
@@ -676,7 +677,6 @@ end
 function MinifluxBrowser:onMenuHold(item)
     if #(self.paths or {}) == 0 and item and item.item_key == 'unread' then
         local ConfirmBox = require('ui/widget/confirmbox')
-        local UIManager = require('ui/uimanager')
         local Notification = require('shared/widgets/notification')
         local self_ref = self
         local dialog = ConfirmBox:new{
@@ -689,7 +689,9 @@ function MinifluxBrowser:onMenuHold(item)
                     local ok = self_ref.miniflux.entries:markAllUnreadAsRead({
                         dialogs = { error = { text = _('Failed to mark all as read') } },
                     })
-                    if loading then loading:close() end
+                    if loading then
+                        loading:close()
+                    end
                     if ok then
                         self_ref:invalidateAllCaches()
                         self_ref:refreshCurrentViewData()
@@ -703,7 +705,6 @@ function MinifluxBrowser:onMenuHold(item)
     end
     if #(self.paths or {}) == 0 and item and item.item_key == 'read' then
         local ConfirmBox = require('ui/widget/confirmbox')
-        local UIManager = require('ui/uimanager')
         local Notification = require('shared/widgets/notification')
         local self_ref = self
         local dialog = ConfirmBox:new{
@@ -716,7 +717,9 @@ function MinifluxBrowser:onMenuHold(item)
                     local ok = self_ref.miniflux.entries:markAllReadAsRemoved({
                         dialogs = { error = { text = _('Failed to remove read entries') } },
                     })
-                    if loading then loading:close() end
+                    if loading then
+                        loading:close()
+                    end
                     if ok then
                         self_ref:invalidateAllCaches()
                         self_ref:refreshCurrentViewData()
@@ -857,7 +860,6 @@ end
 ---Override base Browser to provide explicit 2-column layout for better Mark action pairing
 function MinifluxBrowser:showSelectionActionsDialog()
     local ButtonDialog = require('ui/widget/buttondialog')
-    local UIManager = require('ui/uimanager')
     local N_ = require('gettext').ngettext
 
     local selected_count = self:getSelectedCount()
@@ -1040,7 +1042,7 @@ function MinifluxBrowser:removeSelectedEntries(selected_items)
     end
 
     local entry_ids = {}
-    for idx, item in ipairs(selected_items) do
+    for _, item in ipairs(selected_items) do
         if item.entry_data and item.entry_data.id then
             table.insert(entry_ids, item.entry_data.id)
         end
@@ -1063,8 +1065,7 @@ function MinifluxBrowser:removeSelectedEntries(selected_items)
         else
             Notification:info(T(L('%1 entries removed'), #entry_ids))
         end
-        local EntryPaths = require('domains/utils/entry_paths')
-        for idx, id in ipairs(entry_ids) do
+        for _, id in ipairs(entry_ids) do
             EntryPaths.deleteLocalEntry(id, { silent = true, always_remove_from_history = true })
         end
         -- Refresh after deleting local files so Local list updates (getLocalEntries reads from disk)
@@ -1174,7 +1175,6 @@ function MinifluxBrowser:deleteSelectedEntries(selected_items)
     end
 
     -- Show confirmation dialog
-    local UIManager = require('ui/uimanager')
     local ConfirmBox = require('ui/widget/confirmbox')
 
     local message

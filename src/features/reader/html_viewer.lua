@@ -84,7 +84,7 @@ local function base64Encode(data)
     for i = 1, #data, 3 do
         local a, b, c = data:byte(i, i + 2)
         local n = (a or 0) * 65536 + (b or 0) * 256 + (c or 0)
-        for j = 1, 4 do
+        for _ = 1, 4 do
             local idx = math.floor(n / 262144) % 64 + 1
             s[#s + 1] = b64:sub(idx, idx)
             n = (n % 262144) * 64
@@ -229,7 +229,7 @@ end
 ---@param url string Article URL to fetch and display
 ---@param title string|nil Optional title for the viewer
 ---@param opts table|nil Optional: { parent_browser = Browser } to track overlay so browser can close it first and avoid hang
-function HtmlViewer.showUrl(url, title, opts)
+function HtmlViewer.showUrl(url, _title, opts)
     logger.dbg('[Miniflux:HtmlViewer] showUrl', url and url:sub(1, 60) or 'nil')
     if not url or url == '' then
         Notification:error(_('No URL provided'))
