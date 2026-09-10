@@ -65,6 +65,7 @@ read_only_globals = [
     "rawget", "rawset", "rawequal", "rawlen",
     "next", "select",
     "unpack", # Lua 5.1
+    "G_reader_settings",
 ]
 
 # Lint rules configuration
