@@ -296,7 +296,10 @@ function MinifluxEndOfBook:showDialog(entry_info)
                     end
                     if entry_id_to_delete then
                         UIManager:scheduleIn(0, function()
-                            EntryPaths.deleteLocalEntry(entry_id_to_delete, { silent = true, always_remove_from_history = true })
+                            EntryPaths.deleteLocalEntry(
+                                entry_id_to_delete,
+                                { silent = true, always_remove_from_history = true }
+                            )
                         end)
                     end
                 end,
@@ -533,7 +536,11 @@ function MinifluxEndOfBook:returnToBrowser()
         miniflux.browser:open()
         return
     end
-    logger.dbg('[Miniflux:EndOfBook] returnToBrowser context:', context.type, context.id or context.search or '')
+    logger.dbg(
+        '[Miniflux:EndOfBook] returnToBrowser context:',
+        context.type,
+        context.id or context.search or ''
+    )
 
     local view_name
     local nav_context
