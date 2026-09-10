@@ -543,7 +543,6 @@ function MinifluxBrowser:getRouteHandlers(nav_config)
                 end,
                 onMarkAllAsRead = function()
                     local Notification = require('shared/widgets/notification')
-                    local MinifluxEvent = require('shared/event')
                     local loading = Notification:info(_('Marking up to 1000 entries as read... Please wait.'), { timeout = nil })
                     local ok = self.miniflux.entries:markAllUnreadAsRead({
                         dialogs = { error = { text = _('Failed to mark all as read') } },
@@ -571,7 +570,6 @@ function MinifluxBrowser:getRouteHandlers(nav_config)
                 end,
                 onRemoveAllFromRead = function()
                     local Notification = require('shared/widgets/notification')
-                    local MinifluxEvent = require('shared/event')
                     local loading = Notification:info(_('Removing up to 1000 from read... Please wait.'), { timeout = nil })
                     local ok = self.miniflux.entries:markAllReadAsRemoved({
                         dialogs = { error = { text = _('Failed to remove read entries') } },

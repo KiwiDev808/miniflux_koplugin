@@ -91,8 +91,12 @@ local function base64Encode(data)
         end
     end
     local pad = ({ 0, 2, 1 })[#data % 3 + 1]
-    for _ = 1, pad do s[#s] = nil end
-    for _ = 1, pad do s[#s + 1] = '=' end
+    for _ = 1, pad do
+        s[#s] = nil
+    end
+    for _ = 1, pad do
+        s[#s + 1] = '='
+    end
     return table.concat(s)
 end
 
@@ -525,7 +529,9 @@ function HtmlViewer.showUrl(url, _title, opts)
             if parent_browser and parent_browser.current_overlay == html_box then
                 parent_browser.current_overlay = nil
             end
-            if orig_onCloseWidget then orig_onCloseWidget(self) end
+            if orig_onCloseWidget then
+                orig_onCloseWidget(self)
+            end
         end
 
         if parent_browser then
@@ -535,7 +541,9 @@ function HtmlViewer.showUrl(url, _title, opts)
         -- When opening a link in external browser, close the viewer
         local orig_link_cb = html_box.html_link_tapped_callback
         html_box.html_link_tapped_callback = function(link)
-            if orig_link_cb then orig_link_cb(link) end
+            if orig_link_cb then
+                orig_link_cb(link)
+            end
             if link and link.uri and Device.openLink and not (Device.isKindle or Device.isKobo or Device.isPocketBook) then
                 doClose()
             end

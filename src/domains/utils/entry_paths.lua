@@ -163,6 +163,7 @@ function EntryPaths.openKoreaderHomeFolder()
         ReaderUI.instance:onClose()
     end
 
+    local G_reader_settings = rawget(_G, 'G_reader_settings')
     local home_dir = G_reader_settings and G_reader_settings:readSetting('home_dir')
     if not home_dir or lfs.attributes(home_dir, 'mode') ~= 'directory' then
         home_dir = Device.home_dir
