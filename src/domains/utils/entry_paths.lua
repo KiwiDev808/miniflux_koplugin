@@ -131,7 +131,12 @@ function EntryPaths.deleteLocalEntry(entry_id, opts)
         end
         return true
     else
-        logger.dbg('[Miniflux:EntryPaths] deleteLocalEntry failed entry_id:', entry_id, 'purgeDir result:', ok)
+        logger.dbg(
+    '[Miniflux:EntryPaths] deleteLocalEntry failed entry_id:',
+    entry_id,
+    'purgeDir result:',
+    ok
+)
         if not opts.silent then
             Notification:error(_('Failed to delete local entry: ') .. tostring(ok))
         end

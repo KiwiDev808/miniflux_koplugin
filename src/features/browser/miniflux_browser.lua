@@ -392,7 +392,10 @@ function MinifluxBrowser:close()
                 and EntryValidation.isValidId(entry_id)
             if do_auto_delete then
                 pcall(function()
-                    EntryPaths.deleteLocalEntry(entry_id, { silent = true, always_remove_from_history = true })
+                    EntryPaths.deleteLocalEntry(
+    entry_id,
+    { silent = true, always_remove_from_history = true }
+)
                 end)
             end
             LastReturnedEntry.entry_id = nil
@@ -543,7 +546,10 @@ function MinifluxBrowser:getRouteHandlers(nav_config)
                 end,
                 onMarkAllAsRead = function()
                     local Notification = require('shared/widgets/notification')
-                    local loading = Notification:info(_('Marking up to 1000 entries as read... Please wait.'), { timeout = nil })
+                    local loading = Notification:info(
+    _('Marking up to 1000 entries as read... Please wait.'),
+    { timeout = nil }
+)
                     local ok = self.miniflux.entries:markAllUnreadAsRead({
                         dialogs = { error = { text = _('Failed to mark all as read') } },
                     })
@@ -570,7 +576,10 @@ function MinifluxBrowser:getRouteHandlers(nav_config)
                 end,
                 onRemoveAllFromRead = function()
                     local Notification = require('shared/widgets/notification')
-                    local loading = Notification:info(_('Removing up to 1000 from read... Please wait.'), { timeout = nil })
+                    local loading = Notification:info(
+    _('Removing up to 1000 from read... Please wait.'),
+    { timeout = nil }
+)
                     local ok = self.miniflux.entries:markAllReadAsRemoved({
                         dialogs = { error = { text = _('Failed to remove read entries') } },
                     })
@@ -683,7 +692,10 @@ function MinifluxBrowser:onMenuHold(item)
             cancel_text = _('Cancel'),
             ok_callback = function()
                 UIManager:scheduleIn(0.1, function()
-                    local loading = Notification:info(_('Marking up to 1000 entries as read... Please wait.'), { timeout = nil })
+                    local loading = Notification:info(
+    _('Marking up to 1000 entries as read... Please wait.'),
+    { timeout = nil }
+)
                     local ok = self_ref.miniflux.entries:markAllUnreadAsRead({
                         dialogs = { error = { text = _('Failed to mark all as read') } },
                     })
@@ -711,7 +723,10 @@ function MinifluxBrowser:onMenuHold(item)
             cancel_text = _('Cancel'),
             ok_callback = function()
                 UIManager:scheduleIn(0.1, function()
-                    local loading = Notification:info(_('Removing up to 1000 from read... Please wait.'), { timeout = nil })
+                    local loading = Notification:info(
+    _('Removing up to 1000 from read... Please wait.'),
+    { timeout = nil }
+)
                     local ok = self_ref.miniflux.entries:markAllReadAsRemoved({
                         dialogs = { error = { text = _('Failed to remove read entries') } },
                     })
@@ -1064,7 +1079,10 @@ function MinifluxBrowser:removeSelectedEntries(selected_items)
             Notification:info(T(L('%1 entries removed'), #entry_ids))
         end
         for _, id in ipairs(entry_ids) do
-            EntryPaths.deleteLocalEntry(id, { silent = true, always_remove_from_history = true })
+            EntryPaths.deleteLocalEntry(
+    id,
+    { silent = true, always_remove_from_history = true }
+)
         end
         -- Refresh after deleting local files so Local list updates (getLocalEntries reads from disk)
         self:refreshCurrentViewData()
@@ -1210,7 +1228,10 @@ function MinifluxBrowser:performBatchDelete(local_entries)
 
     -- Delete each entry (always clean history on bulk delete)
     for _, entry_data in ipairs(local_entries) do
-        local success = EntryPaths.deleteLocalEntry(entry_data.id, { always_remove_from_history = true })
+        local success = EntryPaths.deleteLocalEntry(
+    entry_data.id,
+    { always_remove_from_history = true }
+)
         if success then
             success_count = success_count + 1
         end

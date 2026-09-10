@@ -55,7 +55,10 @@ function MainView.show(config)
                 end
                 local load_ok, loaded = pcall(MainView.loadData, miniflux, { silent = true })
                 if not load_ok or not loaded or type(loaded) ~= 'table' then
-                    logger.dbg('[Miniflux:MainView] async load: loadData failed or empty, ok:', load_ok)
+                    logger.dbg(
+    '[Miniflux:MainView] async load: loadData failed or empty, ok:',
+    load_ok
+)
                     return
                 end
                 MainView._cached_counts = loaded
