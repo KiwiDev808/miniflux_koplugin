@@ -254,7 +254,10 @@ function MinifluxEndOfBook:showDialog(entry_info)
                     Notification:warning(_('Cannot delete: invalid entry ID'))
                     return
                 end
-                local success = EntryPaths.deleteLocalEntry(entry_info.entry_id, { open_folder = false })
+                local success = EntryPaths.deleteLocalEntry(
+                    entry_info.entry_id,
+                    { open_folder = false }
+                )
                 if success then
                     local ReaderUI = require('apps/reader/readerui')
                     if ReaderUI.instance then
@@ -371,10 +374,10 @@ function MinifluxEndOfBook:showDialog(entry_info)
                         local auto_delete = self.miniflux.settings.auto_delete_read_on_close
                             and EntryValidation.isEntryRead(current_status)
                             and not current_starred
-                        local entry_id_to_delete =
-                            (auto_delete and EntryValidation.isValidId(entry_info.entry_id))
-                                and entry_info.entry_id
-                            or nil
+                        local entry_id_to_delete = nil
+                        if auto_delete and EntryValidation.isValidId(entry_info.entry_id) then
+                            entry_id_to_delete = entry_info.entry_id
+                        end
                         BookmarkToggledFlag.toggled = false
                         local ReaderUI = require('apps/reader/readerui')
                         if ReaderUI.instance then
