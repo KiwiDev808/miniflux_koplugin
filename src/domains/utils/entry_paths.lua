@@ -156,18 +156,14 @@ function EntryPaths.openMinifluxFolder()
 end
 
 ---Open the KOReader home folder in file manager (same as file manager "home").
----Uses G_reader_settings home_dir, or Device.home_dir if unset or invalid.
+---Uses Device.home_dir or fallback to filemanagerutil/currentdir if unset or invalid.
 ---@return nil
 function EntryPaths.openKoreaderHomeFolder()
     if ReaderUI.instance then
         ReaderUI.instance:onClose()
     end
 
-    local reader_settings = G_reader_settings
-    local home_dir = reader_settings and reader_settings:readSetting('home_dir')
-    if not home_dir or lfs.attributes(home_dir, 'mode') ~= 'directory' then
-        home_dir = Device.home_dir
-    end
+    local home_dir = Device.home_dir
     if not home_dir then
         -- Fallback: filemanagerutil.getDefaultDir() if available
         local ok, filemanagerutil = pcall(require, 'apps/filemanager/filemanagerutil')
